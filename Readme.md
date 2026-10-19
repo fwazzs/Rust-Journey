@@ -9,13 +9,13 @@ In this day, I had installed Rust on my computer and do little bit experiment wi
 2. Varibale (var = immutatable & var mut = mutable variable)
 3. std::io (Input and Output library)
 
-    io::stdin()
-        .read_line(&mut guess) //take input value of mut guess and store it in guess variable
-        .expect("Failed to read line");
+        io::stdin()
+            .read_line(&mut guess) //take input value of mut guess and store it in guess variable
+            .expect("Failed to read line");
 
 4. std::cmp::Ordering; (Comparation library)
 
-    match guess.cmp(&secret_number) { //compare guess with secret number
+        match guess.cmp(&secret_number) { //compare guess with secret number
             Ordering::Less => println!("Too small!"), //if guess is less than secret number
             Ordering::Greater => println!("Too big!"), //if guess is greater than secret number
             Ordering::Equal => {
