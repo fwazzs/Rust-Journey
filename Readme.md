@@ -2,9 +2,8 @@
 It would be contain all of my Rust Programming Language learning progress. It started on 19 Oct 2026.
 
 ### First Week
-## Day 1 (19 Oct 2026)
+## Day 1 (Getting Started & Programming a Guessing Game | 19 Oct 2026)
 
-In this day, I had installed Rust on my computer and do little bit experiment with it by writing some basic code and others :
 1. Learn about Cargo (cargo build, cargo run, cargo build --release, etc)
 2. Varibale (var = immutatable & var mut = mutable variable)
 3. std::io (Input and Output library)
@@ -27,3 +26,19 @@ In this day, I had installed Rust on my computer and do little bit experiment wi
 5. use rand::prelude::*; (Random Generating Number)
 
         rand::rng().random_range(1..=100); //generate random number between 1 and 100
+
+## Day 2 (Common Programming Concepts | 20 Oct 2026)
+
+1. Variable (let, let mut, const, shadowing)
+- let : Immutable
+- let mut : Mutable
+- const : Constant (immutable) but data type must to declared
+- shadowing : Replacing last variable by new value (it also change the data type)
+
+2. Data Type
+- Integer
+- Float
+- Character
+- Boolean (true/false)
+- Tupple (Group of numbers)
+- Array (Group of strings)
