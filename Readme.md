@@ -113,3 +113,47 @@ It would be contain all of my Rust Programming Language learning progress. It st
                 break x;
             }
         };
+
+## Day 4 (Ownership, Borrowing & Slices | 22 Oct 2026)
+
+1. Ownership
+- Each value in Rust has one owner, and when the owner goes out of scope the value is dropped
+- Assigning or passing a heap value (like `String`) moves ownership, the old variable can no longer be used
+- Simple stack values (like `i32`) are copied instead, so the original stays valid
+
+        let x = String::from("Hello World");
+        take_ownership(x); //x is moved here, using x after this line is a compile error
+
+        let y = 5;
+        make_copy(y); //y is copied, still usable after this line
+
+2. Variable Scope
+- A variable is valid from its declaration until the end of the enclosing block `}`
+
+        fn main() {
+            let s = "Hello There!"; //s valid from this line
+        } //s no longer valid (out of scope)
+
+3. String Type
+- String literal (`&str`) is fixed and immutable, e.g. `"YOO"`
+- `String` is growable and mutable, created with `String::from` and extended with `push_str`
+
+        let x = "YOO BRO WHAT'S SUPPP!!!"; //&str
+        let mut y = String::from("Hello Fella!"); //String
+        y.push_str(", My big boy!");
+
+4. Borrowing
+- `&value` borrows a value without taking ownership (read only)
+- `&mut value` borrows a value and allows changing it, the variable must be declared `mut`
+
+        let len = calculate_length(&s1); //borrow s1 to read its length
+        change(&mut s); //borrow s to change it
+
+5. String Slice
+- A slice (`&s[start..end]`) is a reference to part of a string, the end index is not included
+- `&s[..]` slices the whole string
+- `first_word` returns the index of the first space as `usize`; it does not return the slice itself yet
+
+        let s = String::from("hello");
+        let slice = &s[3..s.len()]; //"lo"
+        let whole = &s[..]; //"hello"
