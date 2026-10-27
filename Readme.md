@@ -157,3 +157,77 @@ It would be contain all of my Rust Programming Language learning progress. It st
         let s = String::from("hello");
         let slice = &s[3..s.len()]; //"lo"
         let whole = &s[..]; //"hello"
+
+## Day 5 (Structs & Method Syntax | 27 Oct 2026)
+
+1. Struct
+- Custom type that groups related values under named fields, declared with `struct` (CamelCase name)
+- Create an instance with `StructName { field: value }`, read or change a field with `.`
+- Only the whole instance can be `mut`, you cannot make a single field mutable
+- Field init shorthand: if a variable has the same name as a field, write it once (`email,`)
+- Struct update syntax `..other` fills the remaining fields from another instance
+
+        let mut user1 = User {
+            active: true,
+            username: String::from("Fawaz"),
+            email: String::from("Fawaz123@gmail.com"),
+            sign_in_count: 1,
+        };
+        user1.email = String::from("Pewes123@gmail.com");
+
+        let user2 = User {
+            username: String::from("user2"),
+            ..user1
+        };
+
+2. Tuple Struct & Unit-Like Struct
+- Tuple struct: fields have no names, accessed by index (`.0`), and each struct is its own type even with the same field types
+- Unit-like struct: no fields at all, useful when you need a type but no data (e.g. implementing a trait later)
+
+        struct Color(i32, i32, i32);
+        struct Point(i32, i32, i32);
+        let black = Color(0, 0, 0);
+
+        struct AlwaysEqual;
+        let subject = AlwaysEqual;
+
+3. Printing a Struct
+- `#[derive(Debug)]` above the struct lets it print with `{:?}` or pretty `{:#?}`
+- `dbg!(&rec1)` prints the file, line and value to stderr; pass a reference so ownership is not taken
+
+        #[derive(Debug)]
+        struct Rectangle {
+            width: u32,
+            height: u32,
+        }
+
+        println!("Rec1 is : {rec1:#?}");
+        dbg!(&rec1);
+
+4. Passing a Struct to a Function
+- Borrow it with `&Rectangle` so the function can read it without taking ownership
+- A plain tuple `(u32, u32)` also works, but the names of the values are lost; a struct is clearer
+
+        fn area(rectangle: &Rectangle) -> u32 {
+            rectangle.width * rectangle.height
+        }
+
+        let rec1 = Rectangle { width: 20, height: 10 };
+        let result = area(&rec1); //200
+
+5. Method Syntax
+- `impl` block holds functions that belong to a struct
+- `&self` is the first parameter of a method, call it with dot syntax: `rec1.area()`
+- Methods can take more parameters, e.g. `other: &Rectangle`
+
+        impl Rectangle {
+            fn area(&self) -> u32 {
+                self.width * self.height
+            }
+
+            fn can_hold(&self, other: &Rectangle) -> bool {
+                self.width > other.width && self.height > other.height
+            }
+        }
+
+        println!("{}", rec1.can_hold(&rec2));
