@@ -231,3 +231,65 @@ It would be contain all of my Rust Programming Language learning progress. It st
         }
 
         println!("{}", rec1.can_hold(&rec2));
+
+## Day 6 (Enums & Pattern Matching | 29 Oct 2026)
+
+1. Enum
+- Defines a type that can be one of several variants, declared with `enum` (CamelCase name)
+- Variants can hold no data, a tuple of values, a named struct-like set of fields, or a single `String`
+- Each variant is accessed with `Enum::Variant`
+
+        enum IpAddr {
+            V4(u8, u8, u8, u8),
+            V6(String),
+        }
+
+        enum Message {
+            Quit,
+            Move { x: u32, y: i32 },
+            Write(String),
+            Change_color(i32, i32, i32),
+        }
+
+        let home = IpAddr::V4(127, 0, 0, 1);
+        let mut msg = Message::Move { x: 32, y: 12 };
+
+2. Option Enum
+- `Option<T>` is in the standard prelude and means a value is either `Some(T)` or `None`
+- Rust has no `null`, so `Option<T>` must be handled before it can be used as a `T`
+- `None` needs a type annotation when the compiler cannot infer it, e.g. `let z: Option<u32> = None;`
+
+        let x = Some(5);
+        let z: Option<u32> = None;
+
+3. Match Expression
+- `match` compares a value against patterns, and the first matching arm runs
+- Arms must cover every possible case (exhaustive), otherwise the code does not compile
+- An arm can bind a value from the variant, e.g. `Coin::Quarter(state)` gives access to `state`
+- Arms with a block `{}` can run several statements; the arm's last expression is the returned value
+
+        fn value_in_cents(coin: Coin) -> u8 {
+            match coin {
+                Coin::Penny => 1,
+                Coin::Nickel => 5,
+                Coin::Dime => 10,
+                Coin::Quarter(state) => {
+                    println!("State Quarter from {state:?}!");
+                    25
+                },
+            }
+        }
+
+4. Matching Option
+- Use `match` to handle both `Some` and `None`, and `Some(i)` binds the inner value
+- Matching `None` must be written too, the compiler forces the case to be handled
+
+        fn plus_one(x: Option<i32>) -> Option<i32> {
+            match x {
+                None => None,
+                Some(i) => Some(i + 1),
+            }
+        }
+
+        let a = Some(5);
+        let b = plus_one(a); //Some(6)
