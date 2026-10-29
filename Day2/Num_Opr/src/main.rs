@@ -1,5 +1,6 @@
+// shows the arithmetic operators
 fn main() {
-    //addiction
+    //addition
     let sum = 5 + 10;
 
     //subtraction
@@ -10,7 +11,7 @@ fn main() {
 
     //division
     let quotient = 56.7 / 32.2;
-    let truncated = -5 / 3; //result is -1, because it truncates toward zero
+    let truncated = -5 / 3; //result is -1, because integer division truncates toward zero
 
     //remainder
     let remainder = 43 % 5; //modulus operator gives the remainder of the division

@@ -293,3 +293,19 @@ It would be contain all of my Rust Programming Language learning progress. It st
 
         let a = Some(5);
         let b = plus_one(a); //Some(6)
+
+5. If Let
+- `if let PATTERN = value { ... }` is a shorter `match` when you only care about one pattern and ignore the rest
+- Add `else` to handle every other case, e.g. `if let Coin::Quarter(state) = coin { ... } else { ... }`
+
+        let config_max = Some(3u8);
+        if let Some(max) = config_max {
+            println!("The maximum of config {max}")
+        }
+
+        let coin = Coin::Quarter(UsState::Alaska);
+        if let Coin::Quarter(state) = coin {
+            println!("State of Quarter is {state:?}");
+        } else {
+            count += 1;
+        }
