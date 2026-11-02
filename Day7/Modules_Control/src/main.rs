@@ -1,7 +1,6 @@
 use crate::account::list::User;
 
 pub mod account;
-
 fn main() {
     let user1 = User {
         active: true,
