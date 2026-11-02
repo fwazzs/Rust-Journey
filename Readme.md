@@ -309,3 +309,61 @@ It would be contain all of my Rust Programming Language learning progress. It st
         } else {
             count += 1;
         }
+
+## Day 7 (Packages, Crates & Modules | 3 Nov 2026)
+
+1. Package & Crate
+- Package: a folder with a `Cargo.toml`, can contain at most one library crate (`src/lib.rs`) and any number of binary crates (`src/main.rs`)
+- Crate: the compilation unit, `src/main.rs` is the binary crate root and `src/lib.rs` is the library crate root
+- Module tree starts at the crate root, the root is called `crate`
+
+2. Modules
+- `mod name;` declares a module, Rust looks for its code in `name.rs` or `name/mod.rs`
+- Modules group related code and control privacy, everything inside a module is private by default
+- `pub` makes an item (function, struct, enum, module) visible outside its module
+- Struct fields are private unless marked `pub`, enum variants are always public once the enum is `pub`
+
+        mod front_of_house {
+            pub mod hosting {
+                pub fn add_to_waitlist() {}
+            }
+        }
+
+3. Paths
+- Absolute path starts from the crate root: `crate::front_of_house::hosting::add_to_waitlist();`
+- Relative path starts from the current module: `front_of_house::hosting::add_to_waitlist();`
+- `super` goes up one level to the parent module, useful to call a function in the parent: `super::deliver_order();`
+- `self` refers to the current module
+
+4. `use` Keyword
+- `use` brings a path into scope so it can be called with a shorter name
+- Idiomatic: import the parent module of a function (`hosting::add_to_waitlist()`), but import the full path of structs and enums
+- `as` renames an import: `use std::io::Result as IoResult;`
+- `pub use` re-exports an item so outside code can use it through the new path
+- Nested paths and glob: `use std::{cmp::Ordering, io};`, `use std::collections::*;` (glob, use sparingly)
+
+        use crate::front_of_house::hosting;
+
+        hosting::add_to_waitlist();
+
+5. Struct Privacy
+- A `pub struct` can still have private fields, so make only the fields that outside code needs `pub`
+- Private fields can only be set through a `pub` function, e.g. `Breakfast::summer("Rye")`
+
+        pub struct Breakfast {
+            pub toast: String,
+            seasonal_fruit: String,
+        }
+
+6. Separating Modules into Files
+- Move a module's body into its own file and keep `mod name;` in the parent (no body block)
+- Nested module in a folder: `account.rs` declares `pub mod list;`, and the code lives in `account/list.rs`
+
+        // src/main.rs
+        pub mod account;
+
+        // src/account.rs
+        pub mod list;
+
+        // src/account/list.rs
+        pub struct User { /* ... */ }
