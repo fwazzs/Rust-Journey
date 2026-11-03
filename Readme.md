@@ -367,3 +367,75 @@ It would be contain all of my Rust Programming Language learning progress. It st
 
         // src/account/list.rs
         pub struct User { /* ... */ }
+
+## Day 8 (Common Collections | 3 Nov 2026)
+
+1. Vector (`Vec<T>`)
+- Growable list of values of the same type, created with `Vec::new()` or the `vec![]` macro
+- Add elements to the end with `push`, the vector must be declared `mut`
+- Read an element with `&v[index]` (panics if out of range) or `v.get(index)` (returns `Option<&T>`, `None` if out of range)
+- Iterate with `for i in &v` to read, or `for i in &mut v` and `*i` to change each element
+
+        let mut v: Vec<i32> = Vec::new();
+        v.push(5);
+
+        let x = vec![1, 2, 3, 4, 5, 6, 7];
+        let third = &x[2]; //3
+        let nine = x.get(10); //None
+
+        for i in &mut x {
+            *i += 50;
+        }
+
+2. Enum to Store Different Types in a Vector
+- A vector holds one type only, so wrap the different types in one enum and store the enum
+
+        #[derive(Debug)]
+        enum Spreadsheetcell {
+            Int(i32),
+            Float(f64),
+            Text(String),
+        }
+
+        let row = vec![
+            Spreadsheetcell::Int(32),
+            Spreadsheetcell::Float(19.23),
+            Spreadsheetcell::Text(String::from("Hello There!")),
+        ];
+
+3. String
+- `String::from` or `to_string()` creates a `String` from a `&str`
+- `push_str` adds a `&str` to the end, `push` adds one `char`
+- `+` takes ownership of the left `String` and adds a `&str` on the right: `s1 + s2`
+- `format!` joins strings like `println!` but returns a `String` and does not take ownership
+- Strings are UTF-8, so slice by byte range (`&hello[0..4]`), and the range must start and end on a char boundary or it panics
+- `.chars()` iterates over Unicode characters, `.bytes()` iterates over the raw bytes
+
+        let mut s1 = String::from("foot");
+        s1.push_str("Bar");
+
+        let s3 = s1 + "Bar"; //s1 is moved, can no longer be used
+
+        let full = format!("{t1}-{t2}-{t3}");
+
+        let hello = "Здравствуйте";
+        let slice = &hello[0..4]; //"Зд", each Cyrillic letter takes 2 bytes
+
+4. HashMap
+- Stores key and value pairs, the key type must be known and hashable (e.g. `String`)
+- Create with `HashMap::new()` (needs `use std::collections::HashMap;`), add with `insert`
+- `get(&key)` returns `Option<&V>`, use `.copied().unwrap_or(0)` to get a plain value with a default
+- Loop with `for (key, value) in &scores`, the order is arbitrary
+- Owned keys and values (`String`) are moved into the map, the original variables can no longer be used
+- `entry(key).or_insert(default)` inserts only if the key is missing, and returns a `&mut` to the value so it can be updated
+
+        let mut scores = HashMap::new();
+        scores.insert(String::from("Blue"), 10);
+
+        let score = scores.get(&String::from("Blue")).copied().unwrap_or(0); //10
+
+        let mut counts = HashMap::new();
+        for word in "hello world wonderful world".split_whitespace() {
+            let count = counts.entry(word).or_insert(0);
+            *count += 1;
+        }
