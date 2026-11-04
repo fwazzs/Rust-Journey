@@ -439,3 +439,42 @@ It would be contain all of my Rust Programming Language learning progress. It st
             let count = counts.entry(word).or_insert(0);
             *count += 1;
         }
+
+## Day 9 (Error Handling & Propagating Errors | 4 Nov 2026)
+
+1. Unrecoverable Errors with `panic!`
+- `panic!` stops the program, use it for bugs or states that should never happen
+- Errors that can be handled should use `Result` instead
+
+2. Recoverable Errors with `Result`
+- `Result<T, E>` is either `Ok(T)` or `Err(E)`
+- Handle it with `match`, the `Ok` arm gives the value and the `Err` arm decides what to do
+
+        let username_file_result = File::open("hello.txt");
+
+        let mut username_file = match username_file_result {
+            Ok(file) => file,
+            Err(e) => return Err(e),   // propagate the error to the caller
+        };
+
+3. Propagating Errors
+- Return the error to the caller instead of handling it in the current function
+- The return type holds the error type, e.g. `Result<String, io::Error>`
+- Writing `match` for every call is long, so the `?` operator does the same job
+
+        fn read_username_from_file() -> Result<String, io::Error> {
+            let mut username_file = File::open("hello.txt")?;
+            let mut username = String::new();
+            username_file.read_to_string(&mut username)?;
+            Ok(username)
+        }
+
+4. The `?` Operator
+- On `Ok(v)`, `?` gives `v` back; on `Err(e)`, it returns `Err(e)` from the function right away
+- `?` only works in functions that return `Result` (or `Option`), not in `main` unless `main` returns `Result`
+- `?` also converts the error type with `From`, so different error types can be propagated
+- `?` is shorter than `match`, but the logic is the same
+
+5. Reading a File to a String
+- `File::open` returns `Result<File, io::Error>`
+- `read_to_string` needs `use std::io::Read;` and returns `Result<usize, io::Error>` with the number of bytes read
